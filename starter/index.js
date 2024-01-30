@@ -86,3 +86,40 @@ var finances = [
   ['Jan-2017', 138230],
   ['Feb-2017', 671099],
 ];
+
+var totalMonths = finances.length;
+var netProfitLoss = 0;
+var totalChange = 0;
+var greatestIncrease = { date: '', amount: -Infinity };
+var greatestDecrease = { date: '', amount: Infinity };
+
+// Loop through the financial data to perform calculations
+for (var i = 0; i < finances.length; i++) {
+    var currentMonthProfit = finances[i][1];
+    netProfitLoss += currentMonthProfit;
+
+    if (i > 0) {
+        var currentChange = currentMonthProfit - finances[i - 1][1];
+        totalChange += currentChange;
+
+        if (currentChange > greatestIncrease.amount) {
+            greatestIncrease.amount = currentChange;
+            greatestIncrease.date = finances[i][0];
+        }
+
+        if (currentChange < greatestDecrease.amount) {
+            greatestDecrease.amount = currentChange;
+            greatestDecrease.date = finances[i][0];
+        }
+    }
+}
+
+// Calc AverageChange
+var averageChange = totalChange / (totalMonths - 1);
+
+// Output results
+console.log("Total number of months: " + totalMonths);
+console.log("Net total amount of Profit/Losses: $" + netProfitLoss);
+console.log("Average of the changes in Profit/Losses: $" + averageChange.toFixed(2));
+console.log("Greatest increase in profits: " + greatestIncrease.date + " ($" + greatestIncrease.amount + ")");
+console.log("Greatest decrease in losses: " + greatestDecrease.date + " ($" + greatestDecrease.amount + ")");
